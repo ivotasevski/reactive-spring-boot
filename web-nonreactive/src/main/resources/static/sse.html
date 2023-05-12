@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Server-Sent Events Example</title>
+    <script>
+        // Create an EventSource object and specify the URL of the SSE endpoint
+        var eventSource = new EventSource('/sse');
+
+        // Event listener for handling SSE errors
+        eventSource.onerror = function (event) {
+            console.error('SSE error:', event);
+            // Close the connection and clean up if an error occurs
+            eventSource.close();
+        };
+
+        eventSource.addEventListener("sampleEvent", (event) => {
+            const newElement = document.createElement("li");
+            const eventList = document.getElementById("list");
+            newElement.textContent = event.previousEventId + ": " + event.data;
+            eventList.appendChild(newElement);
+        });
+
+    </script>
+</head>
+<body>
+<div id="message"></div>
+<ul id="list"></ul>
+</body>
+</html>
